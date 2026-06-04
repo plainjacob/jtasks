@@ -1,6 +1,7 @@
 import Task from '@/components/Task';
 import { createClient } from '@/app/services/supabase/client';
 import { cookies } from 'next/headers';
+import React from 'react';
 
 export default async function TaskList() {
   const cookieStore = await cookies()
@@ -11,10 +12,10 @@ export default async function TaskList() {
   return (
     <ul className='flex flex-col mt-4'>
       {tasks?.map((task, index) => (
-        <>
-          <Task key={task.id} title={task.title} description={task.desription} />
+        <React.Fragment key={task.id}>
+          <Task title={task.title} description={task.description} />
           {index != tasks.length - 1 && <hr className='border-gray-200'/>}
-        </>
+        </React.Fragment>
       ))}
     </ul>
   );
