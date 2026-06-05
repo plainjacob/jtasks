@@ -1,20 +1,18 @@
-import Task from '@/components/Task';
-import { createClient } from '@/app/services/supabase/client';
-import { cookies } from 'next/headers';
+import { createClient } from '@/app/utils/supabase/server';
 import React from 'react';
+import TaskCard from '@/components/TaskCard';
 
 export default async function TaskList() {
-  const cookieStore = await cookies()
-  const supabase = createClient(cookieStore)
-  
-  const { data: tasks } = await supabase.from('tasks').select()
+  const supabase = await createClient();
+
+  const { data: tasks } = await supabase.from('tasks').select();
 
   return (
-    <ul className='flex flex-col mt-4'>
+    <ul className="flex flex-col mt-4">
       {tasks?.map((task, index) => (
         <React.Fragment key={task.id}>
-          <Task title={task.title} description={task.description} />
-          {index != tasks.length - 1 && <hr className='border-gray-200'/>}
+          <TaskCard {...task} />
+          {index != tasks.length - 1 && <hr className="border-gray-200" />}
         </React.Fragment>
       ))}
     </ul>
