@@ -30,14 +30,14 @@ export default function Page() {
   }, []);
 
   return (
-    <div className='h-screen w-full flex items-start'>
+    <div className="h-screen w-full flex items-start">
       <Sidebar />
       {/* Main content */}
       <div className="px-4 flex-1 flex flex-col">
         <header className="text-center mt-4">
           <h1 className="text-4xl">JTasks</h1>
         </header>
-        <TaskList tasks={tasks} />
+        <TaskList tasks={tasks} onTaskDeleted={fetchTasks} />
         <TaskForm onTaskCreated={fetchTasks} />
       </div>
     </div>

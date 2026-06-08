@@ -10,7 +10,7 @@ type TaskFormProps = {
 export default function TaskForm({ onTaskCreated }: TaskFormProps) {
   const [formData, setFormData] = useState({
     title: '',
-    description: ''
+    description: '',
   });
 
   async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
@@ -28,7 +28,7 @@ export default function TaskForm({ onTaskCreated }: TaskFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="self-end flex flex-col gap-1 mt-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-1 mt-4">
       <input
         type="text"
         placeholder="Title"

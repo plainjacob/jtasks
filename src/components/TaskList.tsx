@@ -9,12 +9,12 @@ type TaskListProps = {
   onTaskDeleted?: () => void;
 };
 
-export default function TaskList({ tasks } : TaskListProps) {
+export default function TaskList({ tasks, onTaskDeleted }: TaskListProps) {
   return (
     <ul className="flex flex-col mt-4">
       {tasks?.map((task, index) => (
         <React.Fragment key={task.id}>
-          <TaskCard {...task} onTaskDeleted={fetchTasks} />
+          <TaskCard task={task} onTaskDeleted={onTaskDeleted} />
           {index != tasks.length - 1 && <hr className="border-gray-200" />}
         </React.Fragment>
       ))}
