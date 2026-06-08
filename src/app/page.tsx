@@ -1,8 +1,34 @@
+'use client';
+
 import TaskList from '@/components/TaskList';
 import TaskForm from '@/components/TaskForm';
 import Sidebar from '@/components/Sidebar';
+import { useEffect, useState } from 'react';
+import { createClient } from '@/app/utils/supabase/client';
+import { Database } from '@/database.types';
 
-export default function Home() {
+type Task = Database['public']['Tables']['tasks']['Row']; 
+
+export default function Page() {
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  async function fetchTasks() {
+    const supabase = createClient();
+
+    const { data, error } = await supabase.from('tasks').select('*');
+
+    if (error) {
+      console.error('Error reading task: ', error.message);
+      return;
+    }
+
+    setTasks(data ?? []);
+  }
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
   return (
     <div className='h-screen w-full flex items-start'>
       <Sidebar />
@@ -11,8 +37,8 @@ export default function Home() {
         <header className="text-center mt-4">
           <h1 className="text-4xl">JTasks</h1>
         </header>
-        <TaskList />
-        <TaskForm />
+        <TaskList tasks={tasks} />
+        <TaskForm onTaskCreated={fetchTasks} />
       </div>
     </div>
   );

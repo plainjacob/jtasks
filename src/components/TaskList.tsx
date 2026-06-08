@@ -1,17 +1,20 @@
-import { createClient } from '@/app/utils/supabase/server';
 import React from 'react';
 import TaskCard from '@/components/TaskCard';
+import { Database } from '@/database.types';
 
-export default async function TaskList() {
-  const supabase = await createClient();
+type Task = Database['public']['Tables']['tasks']['Row']; 
 
-  const { data: tasks } = await supabase.from('tasks').select();
+type TaskListProps = {
+  tasks: Task[];
+  onTaskDeleted?: () => void;
+};
 
+export default function TaskList({ tasks } : TaskListProps) {
   return (
     <ul className="flex flex-col mt-4">
       {tasks?.map((task, index) => (
         <React.Fragment key={task.id}>
-          <TaskCard {...task} />
+          <TaskCard {...task} onTaskDeleted={fetchTasks} />
           {index != tasks.length - 1 && <hr className="border-gray-200" />}
         </React.Fragment>
       ))}
