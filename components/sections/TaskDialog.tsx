@@ -1,27 +1,25 @@
 "use client";
 
-import { taskSchema } from "@/app/schemas/task";
-import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
+import { Field, FieldError, FieldLabel } from "../ui/field";
 import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { taskSchema } from "@/app/schemas/task";
 import { z } from "zod";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  FieldGroup,
-  Field,
-  FieldLabel,
-  FieldError,
-} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogOverlay,
+  DialogPortal,
+  DialogTrigger,
+} from "../ui/dialog";
 import { Button } from "../ui/button";
+import { createTaskAction } from "@/app/actions";
 
-export default function TaskForm() {
+export default function TaskDialog() {
+  const [open, setOpen] = React.useState(false);
   const form = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
     defaultValues: {
@@ -30,18 +28,18 @@ export default function TaskForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof taskSchema>) {
-    console.log(data);
+  async function onSubmit(values: z.infer<typeof taskSchema>) {
+    setOpen(false);
+    await createTaskAction(values);
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Add Task</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldGroup>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger>Add Task</DialogTrigger>
+      <DialogPortal>
+        <DialogOverlay />
+        <DialogContent>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
             <Controller
               name="title"
               control={form.control}
@@ -78,19 +76,19 @@ export default function TaskForm() {
                 </Field>
               )}
             />
-          </FieldGroup>
-        </form>
-      </CardContent>
-      <CardFooter>
-        <Field orientation="horizontal">
-          <Button type="button" variant="outline" onClick={() => form.reset()}>
-            Reset
-          </Button>
-          <Button type="submit" form="form-rhf-demo">
-            Submit
-          </Button>
-        </Field>
-      </CardFooter>
-    </Card>
+            <Field orientation="horizontal">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => form.reset()}
+              >
+                Reset
+              </Button>
+              <Button type="submit">Submit</Button>
+            </Field>
+          </form>
+        </DialogContent>
+      </DialogPortal>
+    </Dialog>
   );
 }

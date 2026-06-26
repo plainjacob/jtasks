@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ConvexClientProvider } from "@/providers/ConvexClientProvider";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -30,12 +32,18 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="absolute top-2 right-2">
-            <ThemeToggle />
-          </div>
-          <main className="h-screen max-w-7xl mx-auto w-full p-4 md:p-6 lg:p-8">
-            <ConvexClientProvider>{children}</ConvexClientProvider>
-          </main>
+          <SidebarProvider>
+            <AppSidebar />
+            <div className="absolute top-2 right-2">
+              <ThemeToggle />
+            </div>
+            <main className="h-screen max-w-7xl mx-auto w-full p-4 md:p-6 lg:p-8">
+              <ConvexClientProvider>
+                <SidebarTrigger />
+                {children}
+              </ConvexClientProvider>
+            </main>
+          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>
