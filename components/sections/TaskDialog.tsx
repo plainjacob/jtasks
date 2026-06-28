@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Field, FieldError, FieldLabel } from "../ui/field";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,6 +27,10 @@ export default function TaskDialog() {
       description: "",
     },
   });
+
+  useEffect(() => {
+    form.reset();
+  }, [open, form]);
 
   async function onSubmit(values: z.infer<typeof taskSchema>) {
     setOpen(false);
