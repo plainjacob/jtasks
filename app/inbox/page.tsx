@@ -9,7 +9,7 @@ export default async function Inbox() {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-6">Inbox</h1>
+      <h1 className="text-2xl font-semibold">Inbox</h1>
       <TaskList tasks={tasks} />
     </>
   );

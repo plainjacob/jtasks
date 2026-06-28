@@ -9,7 +9,7 @@ export default async function Completed() {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold mb-6">Completed</h1>
+      <h1 className="text-2xl font-semibold">Completed</h1>
       <TaskList tasks={tasks} />
     </>
   );

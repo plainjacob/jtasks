@@ -61,3 +61,26 @@ export const deleteTask = mutation({
     return await ctx.db.delete(args.taskId);
   },
 });
+
+export const getTaskById = query({
+  args: {
+    taskId: v.id("tasks"),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.get("tasks", args.taskId);
+  },
+});
+
+export const editTask = mutation({
+  args: {
+    taskId: v.id("tasks"),
+    title: v.string(),
+    description: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch("tasks", args.taskId, {
+      title: args.title,
+      description: args.description,
+    });
+  },
+});

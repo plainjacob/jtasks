@@ -1,5 +1,3 @@
-import TaskList from "@/components/sections/TaskList";
-
 export default function Home() {
-  return <h1>Home</h1>;
+  return <h1 className="text-2xl font-semibold">Home</h1>;
 }

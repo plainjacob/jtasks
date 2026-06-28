@@ -7,12 +7,12 @@ import { api } from "@/convex/_generated/api";
 import { updateTag } from "next/cache";
 import { Id } from "@/convex/_generated/dataModel";
 
-export async function createTaskAction(values: z.infer<typeof taskSchema>) {
+export async function createTaskAction(data: z.infer<typeof taskSchema>) {
   try {
-    const parsed = taskSchema.safeParse(values);
+    const parsed = taskSchema.safeParse(data);
 
     if (!parsed.success) {
-      throw new Error("Error task parsing");
+      throw new Error("Error parsing task");
     }
 
     await fetchMutation(api.tasks.createTask, {
@@ -40,6 +40,25 @@ export async function completeTaskAction(taskId: Id<"tasks">) {
 export async function deleteTaskAction(taskId: Id<"tasks">) {
   await fetchMutation(api.tasks.completeTask, {
     taskId: taskId,
+  });
+
+  updateTag("tasks");
+}
+
+export type EditTask = {
+  taskId: Id<"tasks">;
+  title: string;
+  description: string;
+};
+
+export async function editTaskAction(
+  taskId: Id<"tasks">,
+  data: z.infer<typeof taskSchema>,
+) {
+  await fetchMutation(api.tasks.editTask, {
+    taskId: taskId,
+    title: data.title,
+    description: data.description,
   });
 
   updateTag("tasks");

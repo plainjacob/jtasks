@@ -34,7 +34,7 @@ export default function RootLayout({
         >
           <SidebarProvider>
             <AppSidebar />
-            <main className="h-screen max-w-7xl mx-auto w-full">
+            <main className="h-screen max-w-7xl mx-auto w-full p-4 flex flex-col gap-6">
               <ConvexClientProvider>
                 <Header />
                 {children}

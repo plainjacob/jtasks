@@ -15,10 +15,10 @@ import {
   DialogPortal,
   DialogTrigger,
 } from "../ui/dialog";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
 import { createTaskAction } from "@/app/actions";
 
-export default function TaskDialog() {
+export default function AddTaskDialog() {
   const [open, setOpen] = React.useState(false);
   const form = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
@@ -32,14 +32,14 @@ export default function TaskDialog() {
     form.reset();
   }, [open, form]);
 
-  async function onSubmit(values: z.infer<typeof taskSchema>) {
+  async function onSubmit(data: z.infer<typeof taskSchema>) {
     setOpen(false);
-    await createTaskAction(values);
+    await createTaskAction(data);
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>Add Task</DialogTrigger>
+      <DialogTrigger className={buttonVariants()}>Add Task</DialogTrigger>
       <DialogPortal>
         <DialogOverlay />
         <DialogContent>
@@ -88,7 +88,7 @@ export default function TaskDialog() {
               >
                 Reset
               </Button>
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Add</Button>
             </Field>
           </form>
         </DialogContent>

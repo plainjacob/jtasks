@@ -11,9 +11,10 @@ import {
 import { Check, X } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { completeTaskAction, deleteTaskAction } from "@/app/actions";
+import EditTaskDialog from "./EditTaskDialog";
 
 export default function TaskCard({
-  _id,
+  _id: taskId,
   title,
   description,
   completed,
@@ -29,16 +30,17 @@ export default function TaskCard({
           <div>
             <Button
               className={buttonVariants({ variant: "secondary" })}
-              onClick={() => completeTaskAction(_id)}
+              onClick={() => completeTaskAction(taskId)}
             >
               <Check />
             </Button>
             <Button
               className={buttonVariants({ variant: "secondary" })}
-              onClick={() => deleteTaskAction(_id)}
+              onClick={() => deleteTaskAction(taskId)}
             >
               <X />
             </Button>
+            <EditTaskDialog taskId={taskId} />
           </div>
         )}
       </CardContent>

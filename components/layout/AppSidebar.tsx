@@ -1,25 +1,29 @@
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-} from "@/components/ui/sidebar";
-import TaskDialog from "../sections/TaskDialog";
+import { Sidebar } from "@/components/ui/sidebar";
+
 import Link from "next/link";
+import AddTaskDialog from "../sections/AddTaskDialog";
+import { buttonVariants } from "../ui/button";
 
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarHeader />
-      <SidebarContent>
-        <SidebarGroup />
-        <SidebarGroup />
-        <Link href="/inbox">Inbox</Link>
-        <Link href="/completed">Completed</Link>
-        <TaskDialog />
-      </SidebarContent>
-      <SidebarFooter />
+      <div className="flex flex-col gap-2 p-4">
+        <AddTaskDialog />
+        <div className="flex flex-col">
+          <Link
+            className={`${buttonVariants({ variant: "ghost" })} text-left`}
+            href="/inbox"
+          >
+            Inbox
+          </Link>
+          <Link
+            className={buttonVariants({ variant: "ghost" })}
+            href="/completed"
+          >
+            Completed
+          </Link>
+        </div>
+      </div>
     </Sidebar>
   );
 }
