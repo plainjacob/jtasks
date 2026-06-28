@@ -1,14 +1,8 @@
 "use client";
 
 import { Doc } from "@/convex/_generated/dataModel";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
-import { Check, X } from "lucide-react";
+import { Card, CardContent } from "../ui/card";
+import { Check, Trash } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { completeTaskAction, deleteTaskAction } from "@/app/actions";
 import EditTaskDialog from "./EditTaskDialog";
@@ -21,13 +15,13 @@ export default function TaskCard({
 }: Doc<"tasks">) {
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <CardDescription>{description}</CardDescription>
+      <CardContent className="flex justify-between">
+        <div>
+          <h1 className="text-lg font-semibold">{title}</h1>
+          <p>{description}</p>
+        </div>
         {!completed && (
-          <div>
+          <div className="flex gap-1">
             <Button
               className={buttonVariants({ variant: "secondary" })}
               onClick={() => completeTaskAction(taskId)}
@@ -38,7 +32,7 @@ export default function TaskCard({
               className={buttonVariants({ variant: "secondary" })}
               onClick={() => deleteTaskAction(taskId)}
             >
-              <X />
+              <Trash />
             </Button>
             <EditTaskDialog taskId={taskId} />
           </div>

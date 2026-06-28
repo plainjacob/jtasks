@@ -14,10 +14,10 @@ import {
   DialogOverlay,
   DialogPortal,
   DialogTrigger,
-} from "../ui/dialog";
+} from "@/components/ui/dialog";
 import { Button, buttonVariants } from "../ui/button";
 import { editTaskAction } from "@/app/actions";
-import { Pencil } from "lucide-react";
+import { SquarePen } from "lucide-react";
 import { Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -55,7 +55,7 @@ export default function EditTaskDialog({ taskId }: EditTaskDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className={buttonVariants({ variant: "secondary" })}>
-        <Pencil />
+        <SquarePen />
       </DialogTrigger>
       <DialogPortal>
         <DialogOverlay />
