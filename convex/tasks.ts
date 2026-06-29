@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { internalMutation, mutation, query } from "./_generated/server";
 
 export const getUncompletedTasks = query({
   args: {},
@@ -82,5 +82,23 @@ export const editTask = mutation({
       title: args.title,
       description: args.description,
     });
+  },
+});
+
+export const cleanUpCompletedTasks = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const tasks = await ctx.db
+      .query("tasks")
+      .withIndex("by_completed", (q) =>
+        q
+          .eq("completed", true)
+          .lt("_creationTime", Date.now() - 1000 * 60 * 60 * 24 * 90),
+      )
+      .collect();
+
+    for (const task of tasks) {
+      await ctx.db.delete(task._id);
+    }
   },
 });
