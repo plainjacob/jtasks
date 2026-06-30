@@ -16,17 +16,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button, buttonVariants } from "../ui/button";
-import { editTaskAction } from "@/app/actions";
 import { SquarePen } from "lucide-react";
-import { Id } from "@/convex/_generated/dataModel";
-import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
 
-type EditTaskDialogProps = {
-  taskId: Id<"tasks">;
-};
-
-export default function EditTaskDialog({ taskId }: EditTaskDialogProps) {
+export default function EditTaskDialog({ taskId }) {
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
@@ -36,20 +28,16 @@ export default function EditTaskDialog({ taskId }: EditTaskDialogProps) {
     },
   });
 
-  const task = useQuery(api.tasks.getTaskById, {
-    taskId: taskId,
-  });
-
-  useEffect(() => {
-    form.reset({
-      title: task?.title ?? "",
-      description: task?.description ?? "",
-    });
-  }, [task, form]);
+  // useEffect(() => {
+  //   form.reset({
+  //     title: task?.title ?? "",
+  //     description: task?.description ?? "",
+  //   });
+  // }, [task, form]);
 
   async function onSubmit(data: z.infer<typeof taskSchema>) {
     setOpen(false);
-    await editTaskAction(taskId, data);
+    console.log(data);
   }
 
   return (

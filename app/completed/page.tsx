@@ -1,11 +1,15 @@
 "use cache";
 
 import TaskList from "@/components/sections/TaskList";
-import { api } from "@/convex/_generated/api";
-import { fetchQuery } from "convex/nextjs";
 
 export default async function Completed() {
-  const tasks = await fetchQuery(api.tasks.getCompletedTasks);
+  const tasks = [
+    {
+      _id: 1,
+      title: "test",
+      description: "this is a test",
+    },
+  ];
 
   return (
     <>

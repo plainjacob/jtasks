@@ -1,10 +1,8 @@
 "use client";
 
-import { Doc } from "@/convex/_generated/dataModel";
 import { Card, CardContent } from "../ui/card";
 import { Check, Trash } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { completeTaskAction, deleteTaskAction } from "@/app/actions";
 import EditTaskDialog from "./EditTaskDialog";
 
 export default function TaskCard({

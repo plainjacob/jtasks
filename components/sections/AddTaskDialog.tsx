@@ -16,7 +16,6 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Button, buttonVariants } from "../ui/button";
-import { createTaskAction } from "@/app/actions";
 
 export default function AddTaskDialog() {
   const [open, setOpen] = React.useState(false);
@@ -34,7 +33,7 @@ export default function AddTaskDialog() {
 
   async function onSubmit(data: z.infer<typeof taskSchema>) {
     setOpen(false);
-    await createTaskAction(data);
+    console.log(data);
   }
 
   return (
