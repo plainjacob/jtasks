@@ -1,12 +1,7 @@
 import TaskCard from "./TaskCard";
 import { cacheLife, cacheTag } from "next/cache";
-import { Doc } from "@/convex/_generated/dataModel";
 
-type TaskListProps = {
-  tasks: Doc<"tasks">[];
-};
-
-export default async function TaskList({ tasks }: TaskListProps) {
+export default async function TaskList({ tasks }) {
   cacheLife("hours");
   cacheTag("tasks");
 
