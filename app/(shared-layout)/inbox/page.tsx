@@ -1,14 +1,8 @@
-"use cache";
-
+import { getTasks } from "@/app/actions";
 import TaskList from "@/components/sections/TaskList";
 
 export default async function Inbox() {
-  const tasks = [
-    {
-      title: "test",
-      description: "this is a test",
-    },
-  ];
+  const tasks = await getTasks({ completed: false });
 
   return (
     <>

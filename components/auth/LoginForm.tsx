@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -21,6 +20,9 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { createClient } from "@/lib/supabase/client";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -30,6 +32,8 @@ const formSchema = z.object({
 });
 
 export default function LoginForm() {
+  const supabase = createClient();
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,8 +42,21 @@ export default function LoginForm() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
+  async function onSubmit(formData: z.infer<typeof formSchema>) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    if (data.session) {
+      toast.success("Welcome back!");
+      router.push("/inbox");
+    }
   }
 
   return (
@@ -62,7 +79,6 @@ export default function LoginForm() {
                   <FieldLabel htmlFor="email">Email</FieldLabel>
                   <Input
                     {...field}
-                    type="password"
                     id="email"
                     aria-invalid={fieldState.invalid}
                     placeholder="you@example.com"
@@ -82,6 +98,7 @@ export default function LoginForm() {
                   <FieldLabel htmlFor="password">Password</FieldLabel>
                   <Input
                     {...field}
+                    type="password"
                     id="password"
                     aria-invalid={fieldState.invalid}
                     placeholder="Create a password"

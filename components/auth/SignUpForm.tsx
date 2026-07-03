@@ -15,12 +15,8 @@ import {
   CardContent,
   CardFooter,
 } from "../ui/card";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  "https://fqhjxcwzkfhmklkgrgkg.supabase.co",
-  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-);
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -30,6 +26,8 @@ const formSchema = z.object({
 });
 
 export default function SignUpForm() {
+  const supabase = createClient();
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,17 +36,24 @@ export default function SignUpForm() {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
-    const { error } = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
+  async function onSubmit(formData: z.infer<typeof formSchema>) {
+    const { data, error } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
     });
 
     if (error) {
-      toast(error.message);
+      toast.error(error.message);
+      return;
     }
 
-    toast("Check your email to confirm sign-up");
+    if (data.session) {
+      toast.success("Account created!");
+      router.push("/inbox");
+    } else {
+      toast.success("Check your email to confirm sign-up");
+      router.push("/login");
+    }
   }
 
   return (
@@ -73,7 +78,7 @@ export default function SignUpForm() {
                     id="email"
                     aria-invalid={fieldState.invalid}
                     placeholder="you@example.com"
-                    autoComplete="off"
+                    autoComplete="email"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -93,7 +98,7 @@ export default function SignUpForm() {
                     id="password"
                     aria-invalid={fieldState.invalid}
                     placeholder="Create a password"
-                    autoComplete="off"
+                    autoComplete="new-password"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

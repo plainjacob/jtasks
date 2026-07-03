@@ -16,6 +16,9 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Button, buttonVariants } from "../ui/button";
+import { createClient } from "@/lib/supabase/client";
+
+const supabase = createClient();
 
 export default function AddTaskDialog() {
   const [open, setOpen] = React.useState(false);
@@ -31,9 +34,17 @@ export default function AddTaskDialog() {
     form.reset();
   }, [open, form]);
 
-  async function onSubmit(data: z.infer<typeof taskSchema>) {
+  async function onSubmit(formData: z.infer<typeof taskSchema>) {
     setOpen(false);
-    console.log(data);
+
+    const { error } = await supabase.from("tasks").insert({
+      title: formData.title,
+      description: formData.description,
+    });
+
+    if (error) {
+      console.error(error.message);
+    }
   }
 
   return (

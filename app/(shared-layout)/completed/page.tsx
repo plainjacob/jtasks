@@ -1,15 +1,8 @@
-"use cache";
-
+import { getTasks } from "@/app/actions";
 import TaskList from "@/components/sections/TaskList";
 
 export default async function Completed() {
-  const tasks = [
-    {
-      _id: 1,
-      title: "test",
-      description: "this is a test",
-    },
-  ];
+  const tasks = await getTasks({ completed: true });
 
   return (
     <>
