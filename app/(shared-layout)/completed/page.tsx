@@ -1,13 +1,19 @@
-import { getTasks } from "@/app/actions";
 import TaskList from "@/components/sections/TaskList";
+import { getTasks } from "@/lib/tasks";
+import { Suspense } from "react";
 
-export default async function Completed() {
-  const tasks = await getTasks({ completed: true });
-
+export default function Completed() {
   return (
     <>
       <h1 className="text-2xl font-semibold">Completed</h1>
-      <TaskList tasks={tasks} />
+      <Suspense fallback={<p className="text-muted-foreground">Loading...</p>}>
+        <CompletedTasks />
+      </Suspense>
     </>
   );
+}
+
+async function CompletedTasks() {
+  const tasks = await getTasks({ completed: true });
+  return <TaskList tasks={tasks} />;
 }

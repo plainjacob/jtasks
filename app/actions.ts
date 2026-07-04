@@ -1,25 +1,22 @@
+"use server";
+
 import { createClient } from "@/lib/supabase/server";
+import z from "zod";
+import { taskSchema } from "./schemas/task";
+import { revalidatePath } from "next/cache";
 
-export async function getTasks({ completed }: { completed: boolean }) {
+export async function addTask(data: z.infer<typeof taskSchema>) {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
-  if (!user) {
-    console.log("Not authenticated");
-    return [];
-  }
-
-  const { data, error } = await supabase
-    .from("tasks")
-    .select("*")
-    .eq("completed", completed)
-    .eq("user_id", user.id);
+  const { error } = await supabase.from("tasks").insert({
+    title: data.title,
+    description: data.description,
+    completed: false,
+  });
 
   if (error) {
     console.error(error.message);
   }
 
-  return data;
+  revalidatePath("/inbox");
 }

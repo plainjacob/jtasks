@@ -1,13 +1,19 @@
-import { getTasks } from "@/app/actions";
 import TaskList from "@/components/sections/TaskList";
+import { getTasks } from "@/lib/tasks";
+import { Suspense } from "react";
 
-export default async function Inbox() {
-  const tasks = await getTasks({ completed: false });
-
+export default function Inbox() {
   return (
     <>
       <h1 className="text-2xl font-semibold">Inbox</h1>
-      <TaskList tasks={tasks} />
+      <Suspense fallback={<p className="text-muted-foreground">Loading...</p>}>
+        <InboxTasks />
+      </Suspense>
     </>
   );
+}
+
+async function InboxTasks() {
+  const tasks = await getTasks({ completed: false });
+  return <TaskList tasks={tasks} />;
 }
