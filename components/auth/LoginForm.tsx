@@ -23,12 +23,11 @@ import { Input } from "@/components/ui/input";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }),
+  password: z.string(),
 });
 
 export default function LoginForm() {
@@ -63,9 +62,17 @@ export default function LoginForm() {
     <Card className="w-full sm:max-w-md">
       <CardHeader>
         <CardTitle>Welcome back</CardTitle>
-        <CardDescription>
-          Sign in to organize your tasks, track progress, and stay on top of
-          your daily work.
+        <CardDescription className="flex flex-col gap-2">
+          <p>
+            Sign in to organize your tasks, track progress, and stay on top of
+            your daily work.
+          </p>
+          <Link
+            href="/sign-up"
+            className="underline underline-offset-4 hover:text-primary"
+          >
+            New here? Create an account.
+          </Link>
         </CardDescription>
       </CardHeader>
       <CardContent>

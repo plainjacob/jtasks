@@ -17,6 +17,7 @@ import {
 } from "../ui/card";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -60,8 +61,14 @@ export default function SignUpForm() {
     <Card className="w-full sm:max-w-md">
       <CardHeader>
         <CardTitle>Create your account</CardTitle>
-        <CardDescription>
-          Sign up to get started and access all features in minutes.
+        <CardDescription className="flex flex-col gap-2">
+          <p>Sign up to get started and access all features in minutes.</p>
+          <Link
+            href="/login"
+            className="underline underline-offset-4 hover:text-primary"
+          >
+            Already have an account? Sign in.
+          </Link>
         </CardDescription>
       </CardHeader>
       <CardContent>
