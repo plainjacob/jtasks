@@ -4,13 +4,15 @@ import { Card, CardContent } from "../ui/card";
 import { Check, Trash } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import EditTaskDialog from "./EditTaskDialog";
+import { completeTaskAction, deleteTaskAction } from "@/app/actions";
+import { Tables } from "@/lib/supabase";
 
 export default function TaskCard({
-  _id: taskId,
+  id: taskId,
   title,
   description,
   completed,
-}: Doc<"tasks">) {
+}: Tables<"tasks">) {
   return (
     <Card>
       <CardContent className="flex justify-between">
