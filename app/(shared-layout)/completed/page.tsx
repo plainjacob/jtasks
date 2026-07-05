@@ -14,6 +14,6 @@ export default function Completed() {
 }
 
 async function CompletedTasks() {
-  const tasks = await getTasks({ completed: true });
+  const tasks = await getTasks(true);
   return <TaskList tasks={tasks} />;
 }

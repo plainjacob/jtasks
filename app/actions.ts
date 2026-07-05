@@ -43,7 +43,10 @@ export async function completeTaskAction(taskId: Tables<"tasks">["id"]) {
 export async function deleteTaskAction(taskId: Tables<"tasks">["id"]) {
   const supabase = await createClient();
 
-  const { error } = await supabase.from("tasks").delete().eq("id", taskId);
+  const { error } = await supabase
+    .from("tasks")
+    .update({ archived_at: new Date().toISOString() })
+    .eq("id", taskId);
 
   if (error) {
     console.error(error.message);
@@ -52,4 +55,29 @@ export async function deleteTaskAction(taskId: Tables<"tasks">["id"]) {
 
   revalidatePath("/inbox");
   revalidatePath("/completed");
+}
+
+export async function getTaskById(taskId: Tables<"tasks">["id"]) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    console.log("Not authenticated");
+  }
+
+  const { data, error } = await supabase
+    .from("tasks")
+    .select("*")
+    .eq("user_id", user?.id)
+    .eq("id", taskId)
+    .single();
+
+  if (error) {
+    console.error(error.message);
+  }
+
+  return data;
 }

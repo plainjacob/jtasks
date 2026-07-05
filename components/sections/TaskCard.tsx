@@ -12,6 +12,7 @@ export default function TaskCard({
   title,
   description,
   completed,
+  archived_at,
 }: Tables<"tasks">) {
   return (
     <Card>
@@ -20,21 +21,26 @@ export default function TaskCard({
           <h1 className="text-lg font-semibold">{title}</h1>
           <p>{description}</p>
         </div>
-        {!completed && (
+
+        {!archived_at && (
           <div className="flex gap-1">
-            <Button
-              className={buttonVariants({ variant: "secondary" })}
-              onClick={() => completeTaskAction(taskId)}
-            >
-              <Check />
-            </Button>
+            {!completed && (
+              <>
+                <Button
+                  className={buttonVariants({ variant: "secondary" })}
+                  onClick={() => completeTaskAction(taskId)}
+                >
+                  <Check />
+                </Button>
+                <EditTaskDialog taskId={taskId} />
+              </>
+            )}
             <Button
               className={buttonVariants({ variant: "secondary" })}
               onClick={() => deleteTaskAction(taskId)}
             >
               <Trash />
             </Button>
-            <EditTaskDialog taskId={taskId} />
           </div>
         )}
       </CardContent>

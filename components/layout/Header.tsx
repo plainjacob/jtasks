@@ -22,25 +22,27 @@ export default function Header() {
   return (
     <div className="flex justify-between">
       <SidebarTrigger />
-      <ThemeToggle />
-      {user && (
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            className={`${buttonVariants({
-              variant: "ghost",
-            })} icon`}
-          >
-            <User />
-            {user?.email}
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-40" align="start">
-            <DropdownMenuItem onClick={() => signOut()}>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
+      <div className="flex gap-1">
+        <ThemeToggle />
+        {user && (
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              className={`${buttonVariants({
+                variant: "ghost",
+              })} icon`}
+            >
+              <User />
+              {user?.email}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-40" align="start">
+              <DropdownMenuItem onClick={() => signOut()}>
+                <LogOut />
+                Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+      </div>
     </div>
   );
 }

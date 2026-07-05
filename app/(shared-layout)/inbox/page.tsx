@@ -14,6 +14,6 @@ export default function Inbox() {
 }
 
 async function InboxTasks() {
-  const tasks = await getTasks({ completed: false });
+  const tasks = await getTasks(false);
   return <TaskList tasks={tasks} />;
 }
