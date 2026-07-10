@@ -18,7 +18,7 @@ import {
 import { Button, buttonVariants } from "../ui/button";
 import { SquarePen } from "lucide-react";
 import { Tables } from "@/lib/supabase";
-import { getTaskById } from "@/app/actions";
+import { getTaskById, updateTaskAction } from "@/app/actions";
 
 type EditTaskDialogProps = {
   taskId: Tables<"tasks">["id"];
@@ -49,7 +49,7 @@ export default function EditTaskDialog({ taskId }: EditTaskDialogProps) {
 
   async function onSubmit(data: z.infer<typeof taskSchema>) {
     setOpen(false);
-    console.log(data);
+    updateTaskAction(taskId, data);
   }
 
   return (

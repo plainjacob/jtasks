@@ -81,3 +81,33 @@ export async function getTaskById(taskId: Tables<"tasks">["id"]) {
 
   return data;
 }
+
+export async function updateTaskAction(
+  taskId: Tables<"tasks">["id"],
+  data: {
+    title: string;
+    description: string;
+  },
+) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    console.log("Not authenticated");
+  }
+
+  const { error } = await supabase
+    .from("tasks")
+    .update({ title: data.title, description: data.description })
+    .eq("id", taskId);
+
+  if (error) {
+    console.error(error.message);
+    return;
+  }
+
+  revalidatePath("/inbox");
+}
