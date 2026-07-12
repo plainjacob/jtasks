@@ -17,6 +17,15 @@ import {
 } from "../ui/dialog";
 import { Button, buttonVariants } from "../ui/button";
 import { createTaskAction } from "@/app/actions";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 export default function AddTaskDialog() {
   const [open, setOpen] = React.useState(false);
@@ -25,8 +34,15 @@ export default function AddTaskDialog() {
     defaultValues: {
       title: "",
       description: "",
+      difficulty: undefined,
     },
   });
+
+  const items = [
+    { label: "Easy", value: "easy" },
+    { label: "Medium", value: "medium" },
+    { label: "Hard", value: "hard" },
+  ];
 
   useEffect(() => {
     form.reset();
@@ -75,6 +91,36 @@ export default function AddTaskDialog() {
                     className="min-h-24 resize-none"
                     aria-invalid={fieldState.invalid}
                   />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+            <Controller
+              name="difficulty"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel>Difficulty</FieldLabel>
+                  <Select
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger className="w-full max-w-48">
+                      <SelectValue placeholder="Select difficulty" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Difficulty</SelectLabel>
+                        {items.map((item) => (
+                          <SelectItem key={item.value} value={item.value}>
+                            {item.label}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}

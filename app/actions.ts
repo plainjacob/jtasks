@@ -12,6 +12,7 @@ export async function createTaskAction(data: z.infer<typeof taskSchema>) {
   const { error } = await supabase.from("tasks").insert({
     title: data.title,
     description: data.description,
+    difficulty: data.difficulty,
     completed: false,
   });
 
@@ -87,6 +88,7 @@ export async function updateTaskAction(
   data: {
     title: string;
     description: string;
+    difficulty: string;
   },
 ) {
   const supabase = await createClient();
@@ -101,7 +103,11 @@ export async function updateTaskAction(
 
   const { error } = await supabase
     .from("tasks")
-    .update({ title: data.title, description: data.description })
+    .update({
+      title: data.title,
+      description: data.description,
+      difficulty: data.difficulty,
+    })
     .eq("id", taskId);
 
   if (error) {

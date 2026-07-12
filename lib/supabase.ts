@@ -45,6 +45,7 @@ export type Database = {
           completed: boolean | null
           created_at: string
           description: string | null
+          difficulty: Database["public"]["Enums"]["difficulty"] | null
           id: number
           title: string
           user_id: string
@@ -54,6 +55,7 @@ export type Database = {
           completed?: boolean | null
           created_at?: string
           description?: string | null
+          difficulty?: Database["public"]["Enums"]["difficulty"] | null
           id?: number
           title: string
           user_id?: string
@@ -63,6 +65,7 @@ export type Database = {
           completed?: boolean | null
           created_at?: string
           description?: string | null
+          difficulty?: Database["public"]["Enums"]["difficulty"] | null
           id?: number
           title?: string
           user_id?: string
@@ -77,7 +80,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      difficulty: "hard" | "medium" | "easy"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -207,6 +210,8 @@ export const Constants = {
     Enums: {},
   },
   public: {
-    Enums: {},
+    Enums: {
+      difficulty: ["hard", "medium", "easy"],
+    },
   },
 } as const
