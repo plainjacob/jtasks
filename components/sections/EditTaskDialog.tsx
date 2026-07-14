@@ -18,7 +18,7 @@ import {
 import { Button, buttonVariants } from "../ui/button";
 import { SquarePen } from "lucide-react";
 import { Tables } from "@/lib/supabase";
-import { getTaskById, updateTaskAction } from "@/app/actions";
+import { updateTaskAction } from "@/app/actions/task";
 import {
   Select,
   SelectContent,
@@ -29,11 +29,7 @@ import {
   SelectValue,
 } from "../ui/select";
 
-type EditTaskDialogProps = {
-  taskId: Tables<"tasks">["id"];
-};
-
-export default function EditTaskDialog({ taskId }: EditTaskDialogProps) {
+export default function EditTaskDialog(task: Tables<"tasks">) {
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
@@ -51,22 +47,16 @@ export default function EditTaskDialog({ taskId }: EditTaskDialogProps) {
   ];
 
   useEffect(() => {
-    async function fetchTask() {
-      const task = await getTaskById(taskId);
-
-      form.reset({
-        title: task?.title ?? "",
-        description: task?.description ?? "",
-        difficulty: task?.difficulty,
-      });
-    }
-
-    fetchTask();
-  }, [form, taskId]);
+    form.reset({
+      title: task?.title ?? "",
+      description: task?.description ?? "",
+      difficulty: task?.difficulty ?? undefined,
+    });
+  }, [form, task]);
 
   async function onSubmit(data: z.infer<typeof taskSchema>) {
     setOpen(false);
-    updateTaskAction(taskId, data);
+    updateTaskAction(task.id, data);
   }
 
   return (

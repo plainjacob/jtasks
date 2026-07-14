@@ -16,7 +16,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Button, buttonVariants } from "../ui/button";
-import { createTaskAction } from "@/app/actions";
+import { createTaskAction } from "@/app/actions/task";
 import {
   Select,
   SelectContent,
@@ -103,10 +103,7 @@ export default function AddTaskDialog() {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Difficulty</FieldLabel>
-                  <Select
-                    value={field.value}
-                    onValueChange={field.onChange}
-                  >
+                  <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger className="w-full max-w-48">
                       <SelectValue placeholder="Select difficulty" />
                     </SelectTrigger>

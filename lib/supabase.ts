@@ -39,6 +39,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      projects: {
+        Row: {
+          archived_at: string | null
+          created_at: string
+          id: number
+          title: string
+          user_id: string
+        }
+        Insert: {
+          archived_at?: string | null
+          created_at?: string
+          id?: number
+          title: string
+          user_id?: string
+        }
+        Update: {
+          archived_at?: string | null
+          created_at?: string
+          id?: number
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       tasks: {
         Row: {
           archived_at: string | null
