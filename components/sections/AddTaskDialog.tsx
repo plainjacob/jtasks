@@ -5,7 +5,7 @@ import { Field, FieldError, FieldLabel } from "../ui/field";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { taskSchema } from "@/app/schemas/task";
-import { z } from "zod";
+import { date, z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -26,6 +26,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { CalendarIcon, Calendar } from "lucide-react";
+import { format } from "path";
+import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 
 export default function AddTaskDialog() {
   const [open, setOpen] = React.useState(false);
@@ -35,6 +38,7 @@ export default function AddTaskDialog() {
       title: "",
       description: "",
       difficulty: undefined,
+      due_date: undefined,
     },
   });
 
@@ -118,6 +122,49 @@ export default function AddTaskDialog() {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+            <Controller
+              name="due_date"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field
+                  className="col-span-12 col-start-auto flex self-end flex-col gap-2 space-y-0 items-start"
+                  data-invalid={fieldState.invalid}
+                >
+                  <FieldLabel className="flex w-auto!">Date Picker</FieldLabel>
+
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className="justify-start text-left font-normal w-full"
+                        id="date-0"
+                        name=""
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span className="text-muted-foreground">
+                            Pick a date
+                          </span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        initialFocus
+                        onSelect={field.onChange}
+                      />
+                    </PopoverContent>
+                  </Popover>
+
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}

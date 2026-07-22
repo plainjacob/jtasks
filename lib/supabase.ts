@@ -70,6 +70,7 @@ export type Database = {
           created_at: string
           description: string | null
           difficulty: Database["public"]["Enums"]["difficulty"] | null
+          due_date: string | null
           id: number
           title: string
           user_id: string
@@ -80,6 +81,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           difficulty?: Database["public"]["Enums"]["difficulty"] | null
+          due_date?: string | null
           id?: number
           title: string
           user_id?: string
@@ -90,6 +92,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           difficulty?: Database["public"]["Enums"]["difficulty"] | null
+          due_date?: string | null
           id?: number
           title?: string
           user_id?: string
